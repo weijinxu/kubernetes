@@ -57,6 +57,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&v1.EventList{},
 		&v1.ConfigMap{},
 		&v1.ConfigMapList{},
+		&v1.ResourceQuota{},
+		&v1.ResourceQuotaList{},
 	)
 
 	// Add common types

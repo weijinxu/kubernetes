@@ -173,3 +173,16 @@ type ClusterServiceIngress struct {
 	// List of loadbalancer ingresses of a federated service within a federated cluster
 	Items []v1.LoadBalancerIngress `json:"items"`
 }
+
+// Temporary/alpha structures to support custom resource quota assignments within FederatedResourceQuota.
+
+// A set of preferences that can be added to federated version of ResourceQuota as a json-serialized annotation.
+// The preferences allow the user to express in which clusters he wants to put his resource quota within the
+// mentiond FederatedResourceQuota.
+type FederatedResourceQuotaPreferences struct {
+	// A mapping between cluster names and preferences regarding local ResourceQuota in these clusters.
+	// "*" (if provided) applies to all clusters if an explicit mapping is not provided. If there is no
+	// "*" that clusters without explicit preferences should not have any replicas scheduled.
+	// +optional
+	Clusters []string
+}

@@ -54,6 +54,14 @@ func addConversionFuncs(scheme *runtime.Scheme) error {
 		v1.Convert_api_ServiceSpec_To_v1_ServiceSpec,
 		v1.Convert_v1_ServiceStatus_To_api_ServiceStatus,
 		v1.Convert_api_ServiceStatus_To_v1_ServiceStatus,
+		v1.Convert_v1_ResourceQuota_To_api_ResourceQuota,
+		v1.Convert_api_ResourceQuota_To_v1_ResourceQuota,
+		v1.Convert_v1_ResourceQuotaList_To_api_ResourceQuotaList,
+		v1.Convert_api_ResourceQuotaList_To_v1_ResourceQuotaList,
+		v1.Convert_v1_ResourceQuotaStatus_To_api_ResourceQuotaStatus,
+		v1.Convert_api_ResourceQuotaStatus_To_v1_ResourceQuotaStatus,
+		v1.Convert_v1_ResourceQuotaSpec_To_api_ResourceQuotaSpec,
+		v1.Convert_api_ResourceQuotaSpec_To_v1_ResourceQuotaSpec,
 	)
 	if err != nil {
 		return err

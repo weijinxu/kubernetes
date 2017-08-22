@@ -277,6 +277,7 @@ func defaultResourceConfig() *serverstorage.ResourceConfig {
 		apiv1.SchemeGroupVersion.WithResource("namespaces"),
 		apiv1.SchemeGroupVersion.WithResource("events"),
 		apiv1.SchemeGroupVersion.WithResource("configmaps"),
+		apiv1.SchemeGroupVersion.WithResource("resourcequotas"),
 	)
 	// All extension resources except these are disabled by default.
 	rc.EnableResources(
@@ -437,6 +438,9 @@ func postProcessOpenAPISpecForBackwardCompatibility(s *spec.Swagger) (*spec.Swag
 		"v1.PodSecurityContext":                "io.k8s.kubernetes.pkg.api.v1.PodSecurityContext",
 		"v1.VolumeMount":                       "io.k8s.kubernetes.pkg.api.v1.VolumeMount",
 		"v1.NamespaceList":                     "io.k8s.kubernetes.pkg.api.v1.NamespaceList",
+		"v1.ResourceQuota":                     "io.k8s.kubernetes.pkg.api.v1.ResourceQuota",
+		"v1.ResourceQuotaList":                 "io.k8s.kubernetes.pkg.api.v1.ResourceQuotaList",
+		"v1.ResourceQuotaStatus":               "io.k8s.kubernetes.pkg.api.v1.ResourceQuotaStatus",
 		"v1.TCPSocketAction":                   "io.k8s.kubernetes.pkg.api.v1.TCPSocketAction",
 		"v1.ResourceFieldSelector":             "io.k8s.kubernetes.pkg.api.v1.ResourceFieldSelector",
 		"v1.Container":                         "io.k8s.kubernetes.pkg.api.v1.Container",

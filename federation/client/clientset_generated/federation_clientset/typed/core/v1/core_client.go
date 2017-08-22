@@ -28,6 +28,7 @@ type CoreV1Interface interface {
 	ConfigMapsGetter
 	EventsGetter
 	NamespacesGetter
+	ResourceQuotasGetter
 	SecretsGetter
 	ServicesGetter
 }
@@ -47,6 +48,10 @@ func (c *CoreV1Client) Events(namespace string) EventInterface {
 
 func (c *CoreV1Client) Namespaces() NamespaceInterface {
 	return newNamespaces(c)
+}
+
+func (c *CoreV1Client) ResourceQuotas(namespace string) ResourceQuotaInterface {
+	return newResourceQuotas(c, namespace)
 }
 
 func (c *CoreV1Client) Secrets(namespace string) SecretInterface {

@@ -38,6 +38,7 @@ import (
 	configmapstore "k8s.io/kubernetes/pkg/registry/core/configmap/storage"
 	eventstore "k8s.io/kubernetes/pkg/registry/core/event/storage"
 	namespacestore "k8s.io/kubernetes/pkg/registry/core/namespace/storage"
+	resourcequotastore "k8s.io/kubernetes/pkg/registry/core/resourcequota/storage"
 	secretstore "k8s.io/kubernetes/pkg/registry/core/secret/storage"
 	servicestore "k8s.io/kubernetes/pkg/registry/core/service/storage"
 )
@@ -76,12 +77,20 @@ func installCoreAPIs(s *options.ServerRunOptions, g *genericapiserver.GenericAPI
 			"events": eventStore,
 		}
 	}
+	resourceQuotasStorageFn := func() map[string]rest.Storage {
+		resourceQuotaStore, resourceQuotaStatusStore := resourcequotastore.NewREST(optsGetter)
+		return map[string]rest.Storage{
+			"resourcequotas":        resourceQuotaStore,
+			"resourcequotas/status": resourceQuotaStatusStore,
+		}
+	}
 	resourcesStorageMap := map[string]getResourcesStorageFunc{
-		"services":   servicesStorageFn,
-		"namespaces": namespacesStorageFn,
-		"secrets":    secretsStorageFn,
-		"configmaps": configmapsStorageFn,
-		"events":     eventsStorageFn,
+		"services":       servicesStorageFn,
+		"namespaces":     namespacesStorageFn,
+		"secrets":        secretsStorageFn,
+		"configmaps":     configmapsStorageFn,
+		"events":         eventsStorageFn,
+		"resourcequotas": resourceQuotasStorageFn,
 	}
 	shouldInstallGroup, resources := enabledResources(corev1.SchemeGroupVersion, resourcesStorageMap, apiResourceConfigSource)
 	if !shouldInstallGroup {

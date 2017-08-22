@@ -26,6 +26,7 @@ type CoreInterface interface {
 	ConfigMapsGetter
 	EventsGetter
 	NamespacesGetter
+	ResourceQuotasGetter
 	SecretsGetter
 	ServicesGetter
 }
@@ -45,6 +46,10 @@ func (c *CoreClient) Events(namespace string) EventInterface {
 
 func (c *CoreClient) Namespaces() NamespaceInterface {
 	return newNamespaces(c)
+}
+
+func (c *CoreClient) ResourceQuotas(namespace string) ResourceQuotaInterface {
+	return newResourceQuotas(c, namespace)
 }
 
 func (c *CoreClient) Secrets(namespace string) SecretInterface {

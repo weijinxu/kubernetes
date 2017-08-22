@@ -38,6 +38,10 @@ func (c *FakeCore) Namespaces() internalversion.NamespaceInterface {
 	return &FakeNamespaces{c}
 }
 
+func (c *FakeCore) ResourceQuotas(namespace string) internalversion.ResourceQuotaInterface {
+	return &FakeResourceQuotas{c, namespace}
+}
+
 func (c *FakeCore) Secrets(namespace string) internalversion.SecretInterface {
 	return &FakeSecrets{c, namespace}
 }
