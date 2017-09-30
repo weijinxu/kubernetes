@@ -56,6 +56,7 @@ go_library(
         "//pkg/registry/batch/job/storage:go_default_library",
         "//pkg/registry/cachesize:go_default_library",
         "//pkg/registry/core/configmap/storage:go_default_library",
+        "//pkg/registry/core/resourcequota/storage:go_default_library",
         "//pkg/registry/core/event/storage:go_default_library",
         "//pkg/registry/core/namespace/storage:go_default_library",
         "//pkg/registry/core/secret/storage:go_default_library",

@@ -16,6 +16,7 @@ go_library(
         "registry.go",
         "scheduling.go",
         "secret.go",
+        "resourcequota.go"
     ],
     tags = ["automanaged"],
     deps = [

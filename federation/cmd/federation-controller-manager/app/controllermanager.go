@@ -41,7 +41,6 @@ import (
 	ingresscontroller "k8s.io/kubernetes/federation/pkg/federation-controller/ingress"
 	namespacecontroller "k8s.io/kubernetes/federation/pkg/federation-controller/namespace"
 	replicasetcontroller "k8s.io/kubernetes/federation/pkg/federation-controller/replicaset"
-	resourcequotacontroller "k8s.io/kubernetes/federation/pkg/federation-controller/resourcequota"
 	servicecontroller "k8s.io/kubernetes/federation/pkg/federation-controller/service"
 	servicednscontroller "k8s.io/kubernetes/federation/pkg/federation-controller/service/dns"
 	synccontroller "k8s.io/kubernetes/federation/pkg/federation-controller/sync"
@@ -183,14 +182,6 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config) err
 		glog.V(3).Infof("Running deployment controller")
 		// TODO: rename s.ConcurrentReplicaSetSyncs
 		go deploymentController.Run(s.ConcurrentReplicaSetSyncs, wait.NeverStop)
-	}
-
-	if controllerEnabled(s.Controllers, serverResources, resourcequotacontroller.ControllerName, resourcequotacontroller.RequiredResources, true) {
-		glog.V(3).Infof("Loading client config for resource quota controller %q", resourcequotacontroller.UserAgentName)
-		resourceQuotaClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, resourcequotacontroller.UserAgentName))
-		resourceQuotaController := resourcequotacontroller.NewResourceQuotaController(resourceQuotaClientset)
-		glog.V(3).Infof("Running resource quota controller")
-		go resourceQuotaController.Run(s.ConcurrentReplicaSetSyncs, wait.NeverStop)
 	}
 
 	if controllerEnabled(s.Controllers, serverResources, ingresscontroller.ControllerName, ingresscontroller.RequiredResources, true) {
