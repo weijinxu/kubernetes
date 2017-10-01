@@ -168,6 +168,10 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config) err
 		}
 	}
 
+	for kind, federatedType := range resourcequotacontroller.FederatedTypes() {
+		resourcequotacontroller.StartFederationSyncController(kind, federatedType.AdapterFactory, restClientCfg, stopChan, minimizeLatency)
+	}
+
 	if controllerEnabled(s.Controllers, serverResources, replicasetcontroller.ControllerName, replicasetcontroller.RequiredResources, true) {
 		glog.V(3).Infof("Loading client config for replica set controller %q", replicasetcontroller.UserAgentName)
 		replicaSetClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, replicasetcontroller.UserAgentName))
@@ -183,14 +187,6 @@ func StartControllers(s *options.CMServer, restClientCfg *restclient.Config) err
 		glog.V(3).Infof("Running deployment controller")
 		// TODO: rename s.ConcurrentReplicaSetSyncs
 		go deploymentController.Run(s.ConcurrentReplicaSetSyncs, wait.NeverStop)
-	}
-
-	if controllerEnabled(s.Controllers, serverResources, resourcequotacontroller.ControllerName, resourcequotacontroller.RequiredResources, true) {
-		glog.V(3).Infof("Loading client config for resource quota controller %q", resourcequotacontroller.UserAgentName)
-		resourceQuotaClientset := federationclientset.NewForConfigOrDie(restclient.AddUserAgent(restClientCfg, resourcequotacontroller.UserAgentName))
-		resourceQuotaController := resourcequotacontroller.NewResourceQuotaController(resourceQuotaClientset)
-		glog.V(3).Infof("Running resource quota controller")
-		go resourceQuotaController.Run(s.ConcurrentReplicaSetSyncs, wait.NeverStop)
 	}
 
 	if controllerEnabled(s.Controllers, serverResources, ingresscontroller.ControllerName, ingresscontroller.RequiredResources, true) {
